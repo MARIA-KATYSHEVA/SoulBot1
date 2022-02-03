@@ -16,7 +16,6 @@ ID = None
 class FSMAdmin(StatesGroup):
     photo = State()
     name = State()
-    discription = State()
     price = State()
 
 
@@ -41,11 +40,12 @@ async def cancel_handler(message: types.Message, state: FSMContext):
         await state.finish()
         await message.reply('Exit from states OK')
 
+
 # Начало диалога загрузки нового пункта меню
 # @dp.message_handler(commands='Загрузить', state=None)
 async def cm_start(message: types.Message):
     # if message.from_user.id == ID:
-    if 2+2 == 4:
+    if 2 + 2 == 4:
         await FSMAdmin.photo.set()
         await message.reply('Загрузить фото')
 
@@ -69,20 +69,10 @@ async def load_name(message: types.Message, state: FSMContext):
         async with state.proxy() as data:
             data['name'] = message.text
         await FSMAdmin.next()
-        await message.reply('Теперь введите описание')
+        await message.reply('Теперь введите цену')
 
 
 # Ловим третий ответ
-# @dp.message_handler(state=FSMAdmin.name)
-async def load_description(message: types.Message, state: FSMContext):
-    # if message.from_user.id == ID:
-    if 2 + 2 == 4:
-        async with state.proxy() as data:
-            data['description'] = message.text
-        await FSMAdmin.next()
-        await message.reply('Теперь введите цену')
-
-#Последний ответ
 # @dp.message_handler(state=FSMAdmin.price)
 async def load_price(message: types.Message, state: FSMContext):
     # if message.from_user.id == ID:
@@ -90,29 +80,24 @@ async def load_price(message: types.Message, state: FSMContext):
         async with state.proxy() as data:
             data['price'] = float(message.text)
 
+
 @dp.callback_query_handler(lambda x: x.data.startswitch('del '))
-    async def del_callback_run(callback_query: types.CallbackQuery):
-        await sqlite_db.sql_delete_command(callback_query.data.replace('del ', ''))
-        await callback_query.answer(text=f'{callback_query.data.replace("del ", "")} удалена.', show_alert=True)
+async def del_callback_run(callback_query: types.CallbackQuery):
+    await sqlite_db.sql_delete_command(callback_query.data.replace('del ', ''))
+    await callback_query.answer(text=f'{callback_query.data.replace("del ", "")} удалена.', show_alert=True)
+
 
 @dp.message_handler(commands='Удалить')
 async def delete_item(message: types.Message):
-   # if message.from_user.id == ID:
-    if 2 + 2 == 4:
+    if message.from_user.id == ID:
         read = await sqlite_db.sql_read2()
         for ret in read:
-            await bot.send_photo(message.from_user.id, ret[0], f'{ret[1]}\nОписание: (ret[2]}\nЦена {ret[-1]}'
-            await bot.send_message(message.from_user.id, text="^^^", reply_markup=InlineKeyboardMarkup().\
-                    add(InlineKeyboardButton(f'Удалить{ret[1]}', callback_data= f'del {ret[1]}')))
-
-
-
-        await sqlite_db.sql_add_command(state)
+            await bot.send_photo(message.from_user.id)
+        await sqlite_db.sql_add_command(State)
         # async with state.proxy() as data:
         #     await message.reply(str(data))
-        await state.finish()  # эта команда останавливает машину состояний и удаляет кэш, поэтому нужно перед ней всё
+        await State.finish()  # эта команда останавливает машину состояний и удаляет кэш, поэтому нужно перед ней всё
         # успеть сделать
-
 
 
 # Регистрируем хэндлеры
