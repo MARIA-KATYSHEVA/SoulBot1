@@ -19,7 +19,7 @@ async def catalog(message: types.Message):
 
 # @dp.message_handler(commands=['🧭Расположение'])
 async def address(message: types.Message):
-    await bot.send_message(message.from_user.id, 'Здесь скоро появятся адреса!', reply_markup=kb_client)
+    await bot.send_message(message.from_user.id, 'SOÛL HYGGE Шоурум находится по адресу: ул. Садовая-Сухаревская 15с1', reply_markup=kb_client)
 
 
 # @dp.message_handler(commands=['🚚 Cпособы доставки'])
@@ -32,11 +32,7 @@ async def delivery(message: types.Message):
 # @dp.message_handler(commands=['💳 Cпособы оплаты'])
 async def payment(message: types.Message):
     await bot.send_message(message.from_user.id, 'Оплата производится картой или электронным кошельком на нашем сайте  https://soulhygge.ru/', reply_markup=kb_client)
-
-
-# @dp.message_handler(commands=['Расположение'])
-async def parket_place_command(message: types.Message):
-    await bot.send_message(message.from_user.id, 'SOÛL HYGGE Шоурум находится по адресу: ул. Садовая-Сухаревская 15с1')
+    
 
 
 def register_handlers_client(dp: Dispatcher) -> object:
