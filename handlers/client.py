@@ -8,13 +8,14 @@ from data_base import sqlite_db
 # @dp.message_handler(commands=['start', 'help'])
 async def command_start(message: types.Message):
     await bot.send_message(message.from_user.id,
-                           'Привет!✋ Я - бот онлайн-магазин натуральных свечей и ароматов для дома Soul Hygge! \n Я всегда готов помочь! Выбери в меню интересующую тебя кнопку 👇',
+                           'Привет!✋ Я - бот онлайн-магазин натуральных свечей и ароматов для дома Soul Hygge! \nЯ всегда готов помочь! Выбери в меню интересующую тебя кнопку 👇',
                            reply_markup=kb_client)
 
 
 # @dp.message_handler(commands=['🛍️Каталог'])
 async def catalog(message: types.Message):
-    await bot.send_message(message.from_user.id, 'Здесь скоро появится каталог!', reply_markup=kb_client)
+    for ret in cur.execute('SELECT * FROM calatog').fetchall():
+        await bot.send_photo(message.from_user.id, ret[0], f'({ret[1]}\nОписание: {ret[2]}\nЦена {ret[-1]}), reply_markup=kb_client)
 
 
 # @dp.message_handler(commands=['🧭Расположение'])
