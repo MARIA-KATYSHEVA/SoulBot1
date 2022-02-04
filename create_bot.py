@@ -9,4 +9,3 @@ from aiogram.contrib.fsm_storage.memory import MemoryStorage
 storage = MemoryStorage()
 bot: Bot = Bot(token=TOKEN)
 dp = Dispatcher(bot, storage=storage)
-

@@ -8,19 +8,18 @@ from data_base import sqlite_db
 # @dp.message_handler(commands=['start', 'help'])
 async def command_start(message: types.Message):
     await bot.send_message(message.from_user.id,
-                           'Привет!✋ Я - бот онлайн-магазин натуральных свечей и ароматов для дома Soul Hygge! \nЯ всегда готов помочь! Выбери в меню интересующую тебя кнопку 👇',
+                           'Привет!✋ Я - бот онлайн-магазин натуральных свечей и ароматов для дома Soul Hygge! \n Я всегда готов помочь! Выбери в меню интересующую тебя кнопку 👇',
                            reply_markup=kb_client)
 
 
 # @dp.message_handler(commands=['🛍️Каталог'])
 async def catalog(message: types.Message):
-    for ret in cur.execute('SELECT * FROM calatog').fetchall():
-        await bot.send_photo(message.from_user.id, ret[0], f'({ret[1]}\nОписание: {ret[2]}\nЦена {ret[-1]}), reply_markup=kb_client)
+    await bot.send_message(message.from_user.id, 'Здесь скоро появится каталог!', reply_markup=kb_client)
 
 
 # @dp.message_handler(commands=['🧭Расположение'])
 async def address(message: types.Message):
-    await bot.send_message(message.from_user.id, 'SOÛL HYGGE Шоурум находится по адресу: ул. Садовая-Сухаревская 15с1', reply_markup=kb_client)
+    await bot.send_message(message.from_user.id, 'Здесь скоро появятся адреса!', reply_markup=kb_client)
 
 
 # @dp.message_handler(commands=['🚚 Cпособы доставки'])
@@ -33,7 +32,11 @@ async def delivery(message: types.Message):
 # @dp.message_handler(commands=['💳 Cпособы оплаты'])
 async def payment(message: types.Message):
     await bot.send_message(message.from_user.id, 'Оплата производится картой или электронным кошельком на нашем сайте  https://soulhygge.ru/', reply_markup=kb_client)
-    
+
+
+# @dp.message_handler(commands=['Расположение'])
+async def parket_place_command(message: types.Message):
+    await bot.send_message(message.from_user.id, 'SOÛL HYGGE Шоурум находится по адресу: ул. Садовая-Сухаревская 15с1')
 
 
 def register_handlers_client(dp: Dispatcher) -> object:
