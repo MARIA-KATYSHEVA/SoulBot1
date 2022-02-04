@@ -52,7 +52,7 @@ async def cm_start(message: types.Message):
 
 # Ловим первый ответ и пишем в словарь
 # @dp.message_handler(content_types=['photo'], state=FSMAdmin.photo)
-async def load_photo(message: types.Message, state: FSMContext):
+async def load_photo(message: types.Message, state=FSMAdmin.photo):
     # if message.from_user.id == ID:
     if 2 + 2 == 4:
         async with state.proxy() as data:
@@ -79,25 +79,28 @@ async def load_price(message: types.Message, state: FSMContext):
     if 2 + 2 == 4:
         async with state.proxy() as data:
             data['price'] = float(message.text)
+        await sqlite_db.sql_add_command(state)
+        await bot.send_message(message.from_user.id, 'Данные успешно загружены!')
+        await state.finish()
 
 
-@dp.callback_query_handler(lambda x: x.data.startswitch('del '))
-async def del_callback_run(callback_query: types.CallbackQuery):
-    await sqlite_db.sql_delete_command(callback_query.data.replace('del ', ''))
-    await callback_query.answer(text=f'{callback_query.data.replace("del ", "")} удалена.', show_alert=True)
-
-
-@dp.message_handler(commands='Удалить')
-async def delete_item(message: types.Message):
-    if message.from_user.id == ID:
-        read = await sqlite_db.sql_read2()
-        for ret in read:
-            await bot.send_photo(message.from_user.id)
-        await sqlite_db.sql_add_command(State)
-        # async with state.proxy() as data:
-        #     await message.reply(str(data))
-        await State.finish()  # эта команда останавливает машину состояний и удаляет кэш, поэтому нужно перед ней всё
-        # успеть сделать
+# @dp.callback_query_handler(lambda x: x.data.startswitch('del '))
+# async def del_callback_run(callback_query: types.CallbackQuery):
+#     await sqlite_db.sql_delete_command(callback_query.data.replace('del ', ''))
+#     await callback_query.answer(text=f'{callback_query.data.replace("del ", "")} удалена.', show_alert=True)
+#
+#
+# @dp.message_handler(commands='Удалить')
+# async def delete_item(message: types.Message, state=FSMAdmin.photo):
+#     if message.from_user.id == ID:
+#         read = await sqlite_db.sql_read2()
+#         for ret in read:
+#             await bot.send_photo(message.from_user.id)
+#         await sqlite_db.sql_add_command(state)
+#         # async with state.proxy() as data:
+#         #     await message.reply(str(data))
+#         await state.finish()  # эта команда останавливает машину состояний и удаляет кэш, поэтому нужно перед ней всё
+#         # успеть сделать
 
 
 # Регистрируем хэндлеры
