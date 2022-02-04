@@ -30,3 +30,5 @@ async def sql_read2(message):
 async def sql_delete_command(data):
     return cur.execute('DELETE FROM catalog WHERE name ==?',(data,))
     base.commit()
+
+    
