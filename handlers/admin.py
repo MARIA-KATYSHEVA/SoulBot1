@@ -16,6 +16,7 @@ ID = None
 class FSMAdmin(StatesGroup):
     photo = State()
     name = State()
+    type = State()
     price = State()
 
 
@@ -69,8 +70,15 @@ async def load_name(message: types.Message, state: FSMContext):
         async with state.proxy() as data:
             data['name'] = message.text
         await FSMAdmin.next()
-        await message.reply('Теперь введите цену')
+        await message.reply('Теперь введите категорию')
 
+async def load_type(message: types.Message, state: FSMContext):
+    # if message.from_user.id == ID:
+    if 2 + 2 == 4:
+        async with state.proxy() as data:
+            data['type'] = message.text
+        await FSMAdmin.next()
+        await message.reply('Теперь введите цену')
 
 # Ловим третий ответ
 # @dp.message_handler(state=FSMAdmin.price)
@@ -110,6 +118,7 @@ def register_handlers_admin(dp: Dispatcher):
     dp.register_message_handler(cancel_handler, Text(equals='отмена', ignore_case=True), state="*")
     dp.register_message_handler(load_photo, content_types=['photo'], state=FSMAdmin.photo)
     dp.register_message_handler(load_name, state=FSMAdmin.name)
+    dp.register_message_handler(load_type, state=FSMAdmin.type)
     # dp.register_message_handler(load_description, state=FSMAdmin.description)
     dp.register_message_handler(load_price, state=FSMAdmin.price)
     dp.register_message_handler(make_changes_command, commands=['moderator'], is_chat_admin=True)

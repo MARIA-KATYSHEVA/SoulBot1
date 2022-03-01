@@ -1,7 +1,9 @@
 from aiogram import types, Dispatcher
 from create_bot import bot, dp
 import sqlite3 as sq
-from keyboards import kb_client
+
+from data_base.sqlite_db import natural_canldes
+from keyboards import kb_client, kb_delivery
 from aiogram.types import ReplyKeyboardRemove
 from data_base import sqlite_db
 
@@ -38,10 +40,17 @@ async def catalog(message: types.Message):
 # async def address(message: types.Message):
 #     await bot.send_message(message.from_user.id, 'Здесь скоро появятся адреса!', reply_markup=kb_client)
 
+async def natural(message: types.Message):
+    # await bot.send_message(message.from_user.id, 'Здесь отображется категория Натуральные_свечи!', reply_markup=kb_client)
+    await sqlite_db.natural_canldes(message)
+
+async def diff(message: types.Message):
+    # await bot.send_message(message.from_user.id, 'Здесь отображется категория Диффузоры!', reply_markup=kb_client)
+    await sqlite_db.diffuzers(message)
 
 # @dp.message_handler(commands=['🚚 Cпособы доставки'])
 async def delivery(message: types.Message):
-    await message.reaply("Выберите подходящий вариант!", reply_markup = kb_delivery)
+    await message.reply("Выберите подходящий вариант!", reply_markup = kb_delivery)
 
 @dp.callback_query_handler(text = ["Самовывоз", "Доставка_курьером"])
 async def delivery(call:types.CallbackQuery):
@@ -68,6 +77,8 @@ def register_handlers_client(dp: Dispatcher) -> object:
     # dp.register_message_handler(delivery, commands=['🚚 Cпособы доставки'])
     # dp.register_message_handler(payment, commands=['💳 Cпособы оплаты'])
     dp.register_message_handler(catalog, commands=['Каталог'])
+    dp.register_message_handler(natural_canldes, commands=['Natural'])
+    dp.register_message_handler(diff, commands=['Diffuser'])
     dp.register_message_handler(address, commands=['Расположение'])
     dp.register_message_handler(delivery, commands=['Доставка'])
     dp.register_message_handler(payment, commands=['Оплата'])
