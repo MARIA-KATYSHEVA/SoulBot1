@@ -1,4 +1,4 @@
-from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemove
+from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, ReplyKeyboardRemove, InlineKeyboardButton
 
 # button1 = KeyboardButton('🛍️Каталог')
 # button2 = KeyboardButton('🧭Расположение')
@@ -22,3 +22,8 @@ kb_client.row(button1, button2).row(button3, button4)
 # kb_client.add(button1).add(button2).insert(button3)
 # все в ряд
 # kb_client.add(button1).add(button2).add(button3).row(button4, button5)
+
+del1 = InlineKeyboardButton(text="Доставка", callback_data="Самовывоз")
+del2 = InlineKeyboardButton(text="Доставка", callback_data="Доставка_курьером")
+kb_delivery = InlineKeyboardMarkup(row_width=2)
+kb_delivery.add(del1, del2)
