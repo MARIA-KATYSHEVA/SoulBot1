@@ -24,7 +24,7 @@ from data_base import sqlite_db
 # @dp.message_handler(commands=['start', 'help'])
 async def command_start(message: types.Message):
     await bot.send_message(message.from_user.id,
-                           'Привет!✋ Я - бот онлайн-магазин натуральных свечей и ароматов для дома Soul Hygge! \n Я всегда готов помочь! Выбери в меню интересующую тебя кнопку 👇',
+                           'Привет!✋\n\nРады привествовать Вас в онлайн-магазине натуральных свечей и ароматов для дома Soul Hygge!\n\nВыбери в меню интересующую тебя кнопку 👇',
                            reply_markup=kb_client)
 
 
@@ -50,24 +50,67 @@ async def diff(message: types.Message):
 
 # @dp.message_handler(commands=['🚚 Cпособы доставки'])
 async def delivery(message: types.Message):
-    await message.reply("Выберите подходящий вариант!", reply_markup = kb_delivery)
+    await message.reply("Выберите подходящий вариант ↓", reply_markup = kb_delivery)
 
-@dp.callback_query_handler(text = ["Самовывоз", "Доставка_курьером"])
+
+@dp.callback_query_handler(text = ["📦 Самовывоз", "🚗 Курьером по Москве", "🚚 За МКАД свыше 10 км", "🌍 Другие страны"])
 async def delivery(call:types.CallbackQuery):
-    if call.data == "Cамовывоз":
-         await call.message.answer("Адрес")
-    if call.data == "Доставка_курьером":
+    if call.data == "📦 Самовывоз":
+         await call.message.answer("")
+    if call.data == "🚗 Курьером по Москве":
+        await call.message.answer("")
+    if call.data == "🚚 За МКАД свыше 10 км":
+        await call.message.answer("")
+    if call.data == "🌍 Другие страны":
         await call.message.answer("Условия")
     await call.answer()
+
+async def delivery(message: types.Message):
+    await message.reply("Выберите подходящий вариант ↓", reply_markup = kb_delivery)
+
+
+# @dp.callback_query_handler(text = ["Натуральные свечи", "Диффузеры"])
+# async def catalog(call:types.CallbackQuery):
+#    if call.data == "Натуральные свечи":
+#         await call.message.answer("Натуральные свечи")
+#    if call.data == "Диффузоры":
+#        await call.message.answer("Диффузоры")
+#    await call.answer()
+
 
 # @dp.message_handler(commands=['💳 Cпособы оплаты'])
 async def payment(message: types.Message):
     await bot.send_message(message.from_user.id,'Оплата производится картой или электронным кошельком на нашем сайте  https://soulhygge.ru/', reply_markup = kb_client)
 
+@dp.callback_query_handler(text = ["📍 Москва", "📍 Мытищи", "📍 Санкт-Петербург", "📍 Хабаровск", "📍 Тольятти", "📍 Казахстан", "📍 Иркутск", "📍 Екатеринбург", "📍 Якутия", "📍 Петрозаводск", "📍 Уссурийск"])
+async def delivery(call:types.CallbackQuery):
+    if call.data == "📍 Москва":
+         await call.message.answer("")
+    if call.data == "📍 Мытищи":
+        await call.message.answer("")
+    if call.data == "📍 Санкт-Петербург":
+        await call.message.answer("")
+    if call.data == "📍 Хабаровск":
+        await call.message.answer("")
+    if call.data == "📍 Тольятти":
+        await call.message.answer("")
+    if call.data == "📍 Казахстан":
+        await call.message.answer("")
+    if call.data == "📍 Иркутск":
+        await call.message.answer("")
+    if call.data == "📍 Екатеринбург":
+        await call.message.answer("")
+    if call.data == "📍 Якутия":
+        await call.message.answer("")
+    if call.data == "📍 Петрозаводск":
+        await call.message.answer("")
+    if call.data == "📍 Уссурийск":
+        await call.message.answer("")
+    await call.answer()
 
 # @dp.message_handler(commands=['Расположение'])
 async def address(message: types.Message):
-    await bot.send_message(message.from_user.id, 'SOÛL HYGGE Шоурум находится по адресу: ул. Садовая-Сухаревская 15с1')
+    await bot.send_message(message.from_user.id, 'Выберите Ваш город ↓', reply_markup = kb_delivery)
 
 
 def register_handlers_client(dp: Dispatcher) -> object:

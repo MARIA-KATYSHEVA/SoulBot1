@@ -22,7 +22,7 @@ async def sql_add_command(state):
 
 async def sql_read(message):
     for ret in cur.execute('SELECT * FROM catalog').fetchall():
-        await bot.send_photo(message.from_user.id, ret[0], f'{ret[1]}\nЦена {ret[-1]}')
+        await bot.send_photo(message.from_user.id, ret[0], f'{ret[1]}\nЦена {ret[-1]} ₽')
 
 async def sql_read2(message):
     return cur.execute('SELECT * FROM catalog').fetchall()
